@@ -29,9 +29,9 @@ Kadar Taburan (kg/ha) = Total Berat Baja (kg) / Total Luas (Hektar)
 
 ## Struktur Fail
 
-Projek ini terdiri daripada satu fail HTML tunggal, yang mengandungi HTML, CSS (menggunakan **Tailwind CSS**), dan JavaScript:
+Projek ini terdiri daripada satu fail HTML, CSS, dan JavaScript:
 
-* `fertilizer_calculator.html`: Fail utama dan satu-satunya yang mengandungi keseluruhan logik kalkulator.
+* `index.html`: Fail utama dan satu-satunya yang mengandungi keseluruhan logik kalkulator.
 
 ---
 
