@@ -32,6 +32,7 @@ Kadar Taburan (kg/ha) = Total Berat Baja (kg) / Total Luas (Hektar)
 Projek ini terdiri daripada satu fail HTML, CSS, dan JavaScript:
 
 * `index.html`: Fail utama dan satu-satunya yang mengandungi keseluruhan logik kalkulator.
+* `output.css`: Fail style CSS.
 
 ---
 
