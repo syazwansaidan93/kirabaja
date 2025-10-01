@@ -18,7 +18,7 @@ Kadar Taburan (kg/ha) = Total Berat Baja (kg) / Total Luas (Hektar)
 
 ## Cara Menggunakan
 
-1. Buka fail `fertilizer_calculator.html` dalam mana-mana pelayar web moden.
+1. Buka fail `index.html` dalam mana-mana pelayar web moden.
 2. Masukkan nilai ke dalam tiga medan input berikut:
 
    * **Berat Baja Per Karung (kg):** Berat bersih setiap karung baja.
