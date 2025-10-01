@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Kadar Baja (kg/hektar)</title>
+    <link href="./output.css" rel="stylesheet">>
+    <style>
+        /* Tetapan font utama */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0fdf4; /* Pale green background */
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8 flex justify-center items-start min-h-screen">
+    <div class="w-full max-w-xl bg-white p-6 sm:p-8 rounded-xl shadow-2xl border border-green-200">
+        <!-- Tajuk -->
+        <header class="text-center mb-8">
+            <div class="text-4xl mb-2 text-green-700">🌱</div>
+            <h1 class="text-3xl font-extrabold text-green-800">Kalkulator Kadar Baja</h1>
+            <p class="text-gray-500 mt-1">Kira kadar taburan anda dalam **kg per hektar**.</p>
+        </header>
+
+        <!-- Borang Input -->
+        <div class="space-y-6">
+            <!-- 1. Berat Baja Per Karung -->
+            <div>
+                <label for="kg_per_bag" class="block text-sm font-medium text-gray-700 mb-1">
+                    Berat Baja Per Karung (kg)
+                </label>
+                <input type="number" id="kg_per_bag" min="1" step="0.5"
+                       oninput="calculateRate()"
+                       placeholder="Contoh: 20"
+                       class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 text-lg transition duration-150 ease-in-out">
+            </div>
+
+            <!-- 2. Jumlah Karung Baja -->
+            <div>
+                <label for="num_bags" class="block text-sm font-medium text-gray-700 mb-1">
+                    Jumlah Karung Baja
+                </label>
+                <input type="number" id="num_bags" min="1"
+                       oninput="calculateRate()"
+                       placeholder="Contoh: 4"
+                       class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 text-lg transition duration-150 ease-in-out">
+            </div>
+
+            <!-- 3. Luas Kawasan dalam Ekar -->
+            <div>
+                <label for="area_acres" class="block text-sm font-medium text-gray-700 mb-1">
+                    Luas Kawasan yang Ditabur (ekar)
+                </label>
+                <input type="number" id="area_acres" min="0.01" step="0.1"
+                       oninput="calculateRate()"
+                       placeholder="Contoh: 1.2"
+                       class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 text-lg transition duration-150 ease-in-out">
+            </div>
+        </div>
+        
+        <!-- Butang Reset -->
+        <div class="mt-6">
+            <button onclick="resetInputs()"
+                    class="w-full py-3 bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg shadow-md transition duration-150 ease-in-out">
+                Reset Data
+            </button>
+        </div>
+
+        <!-- Bahagian Hasil (Output) -->
+        <div class="mt-8 pt-6 border-t border-green-200">
+            <h2 class="text-xl font-bold text-green-700 mb-4">Hasil Pengiraan</h2>
+            
+            <!-- Total Berat Baja -->
+            <div class="bg-green-50 p-4 rounded-lg flex justify-between items-center mb-4 shadow-inner">
+                <span class="text-green-800 font-semibold">Total Berat Baja:</span>
+                <span id="total_kg_output" class="text-green-900 text-2xl font-extrabold">0.00 kg</span>
+            </div>
+
+            <!-- Total Luas dalam Hektar -->
+            <div class="bg-yellow-50 p-4 rounded-lg flex justify-between items-center mb-6 shadow-inner">
+                <span class="text-yellow-700 font-semibold">Total Luas (Hektar):</span>
+                <span id="area_ha_output" class="text-yellow-800 text-2xl font-extrabold">0.00 ha</span>
+            </div>
+
+            <!-- Kadar Taburan (Keputusan Akhir) -->
+            <div class="bg-green-600 p-6 rounded-xl text-white text-center shadow-lg">
+                <p class="text-sm font-light mb-1">Kadar Taburan Baja Anda Adalah:</p>
+                <p id="rate_output" class="text-5xl font-black">0.00</p>
+                <p class="text-lg font-bold mt-1">kg per Hektar</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Faktor penukaran: 1 ekar bersamaan 0.404686 hektar
+        const ACRE_TO_HECTARE = 0.404686;
+
+        /**
+         * Fungsi untuk mengira kadar baja (kg/ha) berdasarkan input pengguna.
+         */
+        function calculateRate() {
+            // Dapatkan nilai input
+            const kgPerBag = parseFloat(document.getElementById('kg_per_bag').value) || 0;
+            const numBags = parseFloat(document.getElementById('num_bags').value) || 0;
+            const areaAcres = parseFloat(document.getElementById('area_acres').value) || 0;
+
+            // Pastikan input adalah positif
+            if (kgPerBag <= 0 || numBags <= 0 || areaAcres <= 0) {
+                document.getElementById('total_kg_output').textContent = '0.00 kg';
+                document.getElementById('area_ha_output').textContent = '0.00 ha';
+                document.getElementById('rate_output').textContent = '0.00';
+                return;
+            }
+
+            // Langkah 1: Kira total berat baja (kg)
+            const totalKg = kgPerBag * numBags;
+            
+            // Langkah 2: Kira total luas dalam hektar
+            const areaHa = areaAcres * ACRE_TO_HECTARE;
+
+            // Langkah 3: Kira kadar taburan (kg/ha)
+            const rateKgPerHa = totalKg / areaHa;
+
+            // Paparkan hasil
+            document.getElementById('total_kg_output').textContent = `${totalKg.toFixed(2)} kg`;
+            document.getElementById('area_ha_output').textContent = `${areaHa.toFixed(2)} ha`;
+            
+            // Paparkan kadar akhir. Jika tiada hasil (areaHa == 0), tunjukkan 0.00
+            if (isFinite(rateKgPerHa) && areaHa > 0) {
+                document.getElementById('rate_output').textContent = rateKgPerHa.toFixed(2);
+            } else {
+                document.getElementById('rate_output').textContent = '0.00';
+            }
+        }
+
+        /**
+         * Fungsi untuk menetapkan semula semua medan input dan output.
+         */
+        function resetInputs() {
+            document.getElementById('kg_per_bag').value = '';
+            document.getElementById('num_bags').value = '';
+            document.getElementById('area_acres').value = '';
+            
+            // Panggil calculateRate untuk mengosongkan bahagian output
+            calculateRate(); 
+        }
+
+        // Jalankan pengiraan awal semasa memuatkan halaman. Output akan menjadi 0.00.
+        window.onload = function() {
+            calculateRate();
+        };
+
+    </script>
+</body>
+</html>
